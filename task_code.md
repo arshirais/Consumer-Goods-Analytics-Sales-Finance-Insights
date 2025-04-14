@@ -10,8 +10,7 @@
 
 6.	-- Gross Price Total
 7.	
-8.	
-9.	select 
+8.	select 
 
 10.		s.date, s.product_code, p.product, p.variant, s.sold_quantity, g.      gross_price,
 
@@ -40,34 +39,34 @@
 
 2.  SELECT 
 
-	s.date,
-
-    ROUND(sum(g.gross_price*s.sold_quantity),2) as gross_price_total
-
-FROM fact_sales_monthly s
-
-Join fact_gross_price g
-
-	on s.product_code = s.product_code and 
-
-    g.fiscal_year = get_fiscal_year(s.date)
-
-WHERE customer_code = 90002002
-
-group by s.date
-
-order by s.date asc;
+		s.date,
+	
+	    ROUND(sum(g.gross_price*s.sold_quantity),2) as gross_price_total
+	
+	FROM fact_sales_monthly s
+	
+	Join fact_gross_price g
+	
+		on s.product_code = s.product_code and 
+	
+	    g.fiscal_year = get_fiscal_year(s.date)
+	
+	WHERE customer_code = 90002002
+	
+	group by s.date
+	
+	order by s.date asc;
 
 
 
 3.  CREATE DEFINER=`root`@`localhost` PROCEDURE `get_market_badge`(
 
-IN in_market varchar(50),
-
-IN in_fiscal_year year,
-
-OUT out_badge varchar(50)
-)
+		IN in_market varchar(50),
+		
+		IN in_fiscal_year year,
+		
+		OUT out_badge varchar(50)
+		)
 BEGIN
 	declare qty int default 0;
     
@@ -83,8 +82,7 @@ BEGIN
     if qty > 5000000 then set out_badge = 'Gold';
     else set out_badge = 'Silver';
 
-
-    end if;
+end if;
 END
 
 
@@ -242,67 +240,67 @@ order by region, net_sales_mln desc;
     in_top_n int
 )
 BEGIN
-			with cte1 as (
+	with cte1 as (
 
-					select
+	  select
 
-						p.division as Division,
+	        p.division as Division,
 
-						p.product as Products,
+	  	p.product as Products,
 
-						sum(s.sold_quantity) as Total_qty
+		sum(s.sold_quantity) as Total_qty
 
-					from fact_sales_monthly s
+		from fact_sales_monthly s
 
-					join dim_product p on s.product_code = p.product_code
+		join dim_product p on s.product_code = p.product_code
 
-					where fiscal_year = in_fiscal_year
+		where fiscal_year = in_fiscal_year
 
-					group by p.product),
+		group by p.product),
 
-				cte2 as (select *,
+		cte2 as (select *,
 
-						dense_rank() over(partition by Division order by Total_qty desc) as dnk
+		dense_rank() over(partition by Division order by Total_qty desc) as dnk
 
-						from cte1)
+		from cte1)
 
-			select * from cte2
+	select * from cte2
 
-			where dnk <= in_top_n;
+	where dnk <= in_top_n;
             
 
 
 
 8. with cte1 as (
 
-		select
+    select
 
-			c.market,
+	c.market,
 
-			c.region,
+	c.region,
 
-			round(sum(gross_price_total)/1000000,2) as gross_sales_mln
+	round(sum(gross_price_total)/1000000,2) as gross_sales_mln
 
-			from gross_sales s
+	from gross_sales s
 
-			join dim_customer c
+	join dim_customer c
 
-			on c.customer_code=s.customer_code
+	on c.customer_code=s.customer_code
 
-			where fiscal_year=2021
+	where fiscal_year=2021
 
-			group by market
+   	group by market
 
-			order by gross_sales_mln desc
+   	order by gross_sales_mln desc
 		),
 
-		cte2 as (
+    cte2 as (
+	
+	select *,
+	
+	dense_rank() over(partition by region order by gross_sales_mln desc) as drnk
 
-			select *,
-
-			dense_rank() over(partition by region order by gross_sales_mln desc) as drnk
-
-			from cte1
-		)
+	from cte1
+	)
 
 	select * from cte2 where drnk<=2;
