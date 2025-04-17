@@ -1,4 +1,4 @@
-# Consumer-Goods-Analytics-Sales-Finance-Insights SQL Project
+# FINANCE & CUNSUMER GOODS ANALYSIS - SQL Project
 
 Overview
 =========================
