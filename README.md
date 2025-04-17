@@ -1,4 +1,4 @@
-# FINANCE & CUNSUMER GOODS ANALYSIS - SQL Project
+# CUNSUMER GOODS ANALYSIS : Sales & Finance Insights  - SQL Project
 
 Overview
 =========================
@@ -31,7 +31,7 @@ Ad-hoc Request 10: stored procedure that takes market, fiscal_year and top n as 
 
 
 
-cunclusion -->
+**cunclusion **-->
 
 This project demonstrates the application of SQL for solving real-world business problems and highlights the importance of data-driven decision-making.
 
