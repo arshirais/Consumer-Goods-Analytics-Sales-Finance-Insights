@@ -30,8 +30,7 @@ Ad-hoc Request 10: stored procedure that takes market, fiscal_year and top n as 
 
 
 
-
-cunclusion
+conclusion
 ===========================
 
 This project demonstrates the application of SQL for solving real-world business problems and highlights the importance of data-driven decision-making.
